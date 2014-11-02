@@ -19,6 +19,7 @@ describe Mandrill::WebHook::Processor do
         processor.run!
       end
     end
+
     context "with callback host" do
       let(:callback_host) do
         host = double()
@@ -31,6 +32,7 @@ describe Mandrill::WebHook::Processor do
       let(:params) { { "mandrill_events" => [event1,event2].to_json } }
       it "should pass event payload to the handler" do
         callback_host.should_receive(:handle_inbound).twice
+        callback_host.should_receive(:handle_all).twice
         processor.run!
       end
     end
