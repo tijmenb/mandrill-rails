@@ -20,9 +20,7 @@ class Mandrill::WebHook::Processor
   def run!
     mandrill_events.each do |raw_payload|
       event_payload = wrap_payload(raw_payload)
-      callback_host && callback_host.try(:handle_all,
-        event_payload.event_type.to_sym,
-        event_payload)
+      callback_host.try(:handle_all, (event_payload.event_type || "").to_sym, event_payload)
 
       handler = "handle_#{event_payload.event_type}".to_sym
       if callback_host && callback_host.respond_to?(handler)
